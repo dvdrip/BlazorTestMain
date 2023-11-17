@@ -1,0 +1,43 @@
+﻿@page "/fetchgame"
+@using BlazorTestMain.Shared
+@inject HttpClient Http
+
+<PageTitle>Game</PageTitle>
+
+<h3>FetchGame</h3>
+
+<p>Page for fetching games.</p>
+
+@if (games == null)
+{
+    <p>No games available...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in games)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Genre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Game[]? games;
+
+    protected override async Task OnInitializedAsync()
+    {
+        games = await Http.GetFromJsonAsync<Game[]>("Games");
+    }
+}

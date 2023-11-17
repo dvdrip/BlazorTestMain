@@ -1,4 +1,7 @@
-using Microsoft.AspNetCore.ResponseCompression;
+﻿using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using BlazorTestMain.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<BlazorTestMainServerContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BlazorTestMainServerContext") ?? throw new InvalidOperationException("Connection string 'BlazorTestMainServerContext' not found.")));
 
 var app = builder.Build();
 
